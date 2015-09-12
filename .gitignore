@@ -1,0 +1,14 @@
+# Laravel #
+######################
+/vendor
+/node_modules
+/bower_components
+Homestead.yaml
+Homestead.json
+.env
+composer.lock
+
+# Text Editor Files #
+######################
+*.swp
+*.swo
