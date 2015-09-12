@@ -6,8 +6,13 @@ postcssFiles = {
     "public/style/style.min.css": ['public/style/style.css']
 }
 
-module.exports = function(grunt) {
+scriptOutput = 'public/js/app.min.js';
+scriptFiles = {
+    src: ['bower_components/jquery/dist/jquery.min.js', 'bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js'],
+    dest: scriptOutput
+}
 
+module.exports = function(grunt) {
 
     grunt.initConfig({
         postcss: {
@@ -55,6 +60,22 @@ module.exports = function(grunt) {
                 files: sassFiles
             }
         },
+        uglify: {
+            dist: {
+                options: {
+
+                },
+                files: {
+                    'public/js/app.min.js': [scriptOutput]
+                }
+            }
+        },
+        concat: {
+            options: {
+                separator: ';\n',
+            },
+            dist: scriptFiles,
+        },
         watch: {
             configFiles: {
                 files: ['Gruntfile.js', 'package.json'],
@@ -69,16 +90,21 @@ module.exports = function(grunt) {
                     nospawn: true
                 }
             },
+            scripts: {
+                files: 'resources/assets/js/**/*.js',
+                tasks: ['concat'],
+                options: {
+                    nospawn: true
+                }
+            },
         }
     });
 
-    
-    
 
 
     require('load-grunt-tasks')(grunt);
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('prod', ['sass:dist', 'postcss:prod']);
+    grunt.registerTask('prod', ['sass:dist', 'postcss:prod', 'concat', 'uglify']);
     grunt.registerTask('dev', ['sass:dist', 'postcss:dev']);
 
 };
